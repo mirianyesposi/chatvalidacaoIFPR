@@ -3,6 +3,8 @@ import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, Switch }
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
+    const [estado, setEstado] = useState([]);
+
     const [inputText, setInputText] = useState('');
 
     const [isEnabled, setIsEnabled] = useState(false);
@@ -18,13 +20,14 @@ export default function Chat() {
             text: inputText.trim(),
         };
         setMessages([...messages, newMessage]);
+
+        setEstado([...estado, isEnabled? 'sim': 'nao'])
         setInputText('');
     };
 
 
     const renderItem = ({ item , index}) => {
-        const alignStyle = isEnabled ? styles.leftAlign : styles.rightAlign;
-
+        const alignStyle = estado[index]=='sim' ? styles.leftAlign : styles.rightAlign;
         return (
             <View style={[styles.containerMensagem, alignStyle]}>
                 <Text>{`${item.username} (${item.time}): ${item.text}`}</Text>
