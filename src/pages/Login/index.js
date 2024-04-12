@@ -1,8 +1,33 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import db from '../../services/firebaseConf';
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function Login() {
+
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+
+    const fazerLogin  = async () => {
+        const usuarios = collection(db, 'usuarios');
+        const q = query(usuarios, where("email", "==", email));
+        
+        const dados = await getDocs(q)
+        dados.forEach(dado => {
+            console.log(dado.data())
+
+            if (dado.data().senha == senha){
+                navigation.navigate('Chat')
+            }else{
+                console.log("Senha incorreta")
+            }
+        });
+        
+        //navigation.navigate('Chat')
+    }
+
     const navigation = useNavigation();
     return (
 
@@ -20,16 +45,20 @@ export default function Login() {
                 <Text style={styles.text}>Use seu e-mail e senha cadastrados para acessar o painel de conversas</Text>
 
                 <TextInput
-                    placeholder='Login'
+                    placeholder='Email'
                     style={styles.input}
+                    onChangeText={setEmail}
+                    value={email}
                 />
 
                 <TextInput
                     placeholder='Senha'
                     style={styles.input}
+                    onChangeText={setSenha}
+                    value={senha}
                 />
 
-                <TouchableOpacity style={styles.buttonLogin} onPress={ () => navigation.navigate('Chat')}>
+                <TouchableOpacity style={styles.buttonLogin} onPress={fazerLogin}>
                     <Text style={styles.buttonTextLogin}>Acessar</Text>
                 </TouchableOpacity>
                 

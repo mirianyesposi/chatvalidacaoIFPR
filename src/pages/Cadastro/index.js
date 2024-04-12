@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { collection, addDoc } from "firebase/firestore";
+import db from '../../services/firebaseConf'
 export default function Cadastro() {
 
     const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+
     const navigation = useNavigation();
 
     const regexEmail = new RegExp(/^.*@.*IFPR.*\.com$/i );
     
-    function validacao(){
+    async function validacao(){
         if (!regexEmail.test(email)) {
             alert("EMAIL INVÁLIDO")
             return;
         }
+
+        try {
+            const docRef = await addDoc(collection(db, "usuarios"), {
+                email,
+                senha
+                });
+                console.log("Document written with ID: ", docRef.id);
+                navigation.navigate ('Chat')
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        
     }
         
     return (
@@ -39,6 +54,8 @@ export default function Cadastro() {
                 <TextInput
                     placeholder='Senha'
                     style={styles.input}
+                    onChangeText={setSenha}
+                    value={senha}
                 />
 
                 <TextInput

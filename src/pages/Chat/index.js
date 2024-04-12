@@ -44,13 +44,7 @@ export default function Chat() {
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Digite sua mensagem..."
-                    value={inputText}
-                    onChangeText={setInputText}
-                />
+                
                 <Switch
                     trackColor={{ false: '#767577', true: '#81b0ff' }}
                     thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
@@ -58,6 +52,15 @@ export default function Chat() {
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                 />
+
+            
+                <TextInput
+                    style={styles.input}
+                    placeholder="Digite sua mensagem..."
+                    value={inputText}
+                    onChangeText={setInputText}
+                />
+                
                 <TouchableOpacity style={styles.button} onPress={sendMessage}>
                     <Text style={styles.buttonText}>Enviar</Text>
                 </TouchableOpacity>
@@ -86,10 +89,10 @@ const styles = StyleSheet.create({
     },
     leftAlign: {
         alignSelf: 'flex-start',
-     },
-     rightAlign: {
+    },
+    rightAlign: {
         alignSelf: 'flex-end',
-     },
+    },
 
     containerForm: {
         flex: 2,
@@ -123,4 +126,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         margin: 10,
     },
+
 })
